@@ -1,7 +1,7 @@
 from google.cloud import pubsub_v1
 
-project_id = "my-spark-test-iot"
-subscription_name = "telemetry-data-sub-test"
+project_id = ""
+subscription_name = ""
 # timeout = 120.0           # How long the subscriber should listen for messages in seconds
 
 subscriber = pubsub_v1.SubscriberClient()

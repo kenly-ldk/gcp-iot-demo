@@ -1,10 +1,10 @@
 #!/bin/bash
 python ./gateway.py \
-  --registry_id=my-registry \
-  --gateway_id=my-gateway \
-  --cloud_region=asia-east1 \
-  --project_id=my-spark-test-iot \
-  --private_key_file=gateway_rsa_private.pem \
+  --registry_id=my-registry \                   # Change this registry_id if applicable
+  --gateway_id=my-gateway \                     # Change this gateway_id if applicable
+  --cloud_region=asia-east1 \                   # Change this cloud_region if applicable
+  --project_id=my-spark-test-iot \              # Change this project_id if applicable
+  --private_key_file=gateway_rsa_private.pem \  # Change this private_key_file for gateway if applicable
   --algorithm=RS256 \
   --ca_certs=roots.pem \
   --mqtt_bridge_hostname=mqtt.googleapis.com \

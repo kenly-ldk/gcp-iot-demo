@@ -10,7 +10,7 @@ import time
 from sense_hat import SenseHat
 sh = SenseHat()
 
-ADDR = 'kenly-macbookpro2.lan'          # Edit the gateway address here
+ADDR = ''          # Edit the gateway address here, i.e. hostname or IP address
 PORT = 10000
 
 # Create a UDP socket
