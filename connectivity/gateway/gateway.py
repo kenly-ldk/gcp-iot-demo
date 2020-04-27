@@ -17,7 +17,8 @@ logger.setLevel(logging.INFO)
 
 # create console handler and set level to debug
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+# ch.setLevel(logging.DEBUG)
+
 # CRITICAL > ERROR > WARNING > INFO > DEBUG
 
 # create formatter
@@ -160,12 +161,13 @@ def on_message(unused_client, unused_userdata, message):
         client_addr = gateway_state.subscriptions[message.topic]
 
         if client_addr != gateway_state.gateway_id:
+            # Having fun with 'DISP: <Text>' command
+            if payload.startswith('DISP'):
+                payload = "d_{}".format(payload)
+            
             logger.info('Relaying config[{}] to {}'.format(payload, client_addr))
             udpSerSock.sendto(payload.encode('utf8'), client_addr)
-
-        # Having fun with 'DISP: <Text>' command
-        if payload.startswith('DISP'):
-            udpSerSock.sendto('d_{}'.format(payload).encode('utf8'), client_addr)
+        
 
     except KeyError:
         logger.info('Nobody subscribes to topic {}'.format(message.topic))
