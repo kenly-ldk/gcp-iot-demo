@@ -1,8 +1,10 @@
-# Tutorial #2: Real time IOT data processing with Cloud Functions and Cloud Dataflow
+# Tutorial #2: Real time IOT data processing with Cloud Functions and Cloud Dataflow/Apache Beam
 
-The setup described in this tutorial addresses following scenario: At industrial facilities, sensors are installed to monitor the equipment on site. Sensor data is continuously streamed to the cloud. There it is handled by different components for various purposes, such as real-time monitoring and alerts, long-term data storage for analysis, performance improvement, and model training.
+The setup described in this tutorial addresses following scenario: 
 
-In this tutorial, you will build on top of the previous tutorial #1, where we already setup a gateway that manages a Raspberry Pi device. The accelerometer data from Sense Hat attached to the Raspberry Pi device is continuously generated, and they are delivered to the cloud for real-time processing.
+At industrial facilities, sensors are installed to monitor the equipment on site. Sensor data is continuously streamed to the cloud. There it is handled by different components for various purposes, such as real-time monitoring and alerts, long-term data storage for analysis, performance improvement, and model training.
+
+In this tutorial, you will build on top of the previous [tutorial #1](https://github.com/kenly-ldk/gcp-iot-demo/tree/master/connectivity), where we already setup a gateway that manages a Raspberry Pi device. The accelerometer data from Sense Hat attached to the Raspberry Pi device is continuously generated, and they are delivered to the cloud for real-time processing.
 <hr/>
 
 ## Technical Overview
@@ -122,39 +124,48 @@ textPayload:"X value is -1, triggered by messageID"
 ## Deploy a streaming application to Cloud Dataflow to preserve all raw device data to a datawarehouse, using existing ‘PubSub to BigQuery’ template
 In this section, we deploy a data pipeline with Cloud Dataflow predefined template that transforms data retrieved from Cloud Pub/Sub and loads it into a BigQuery dataset in real-time.
 
-1. First we need to create the BigQuery destination table. From Cloud Shell terminal, execute the following:
+1. First we need to create the destination [BigQuery](https://cloud.google.com/bigquery) dataset and table. Open the [BigQuery console](https://console.cloud.google.com/bigquery), select your corresponding project id <code><b>my-spark-test-iot</b></code> on the left panel, then click **Create Dataset** on the right panel
+![Dataflow](images/BigQuery-1.png)
+
+2. Enter the **Dataset ID**, for example, <code><b>telemetry_data_lake</b></code>. And select the **Data location** as <code><b>Taiwan (asia-east1)</b></code>. Keep the rest of the default values, and click **Create Dataset**
+![Dataflow](images/BigQuery-1b.png)
+
+3. Next select the newly created dataset <code><b>telemetry_data_lake</b></code> on the left panel, then click **Create Table** on the right panel
+![Dataflow](images/BigQuery-1c.png)
+
+4. Keep most the values as default. Enter the **Table Name**, for example, <code><b>telemetry_data_raw</b></code>. Under **Schema**, create 3 fields <code><b>device_id</b></code>, <code><b>event_time</b></code>, <code><b>raw_accelerometer_data</b></code> as following. Create **Create table**
+![Dataflow](images/BigQuery-1d.png)
+
+5. Next we also have to create a staging [Cloud Storage](https://cloud.google.com/storage) bucket named <code><b>my-spark-test-iot-bucket</b></code> for dataflow job to save the intermediate artifacts when executing the job. From Cloud Shell terminal, execute the following:
 ```bash
+gsutil mb -l asia-east1 -b on gs://my-spark-test-iot-bucket
 ```
 
-2. Next we also have to create a staging storage bucket for dataflow job to save the intermediate artifacts when executing the job. From Cloud Shell terminal, execute the following:
-```bash
-```
+6. Now we are ready for creating the [Cloud Dataflow](https://cloud.google.com/dataflow) job. Open the [Cloud Dataflow console](https://console.cloud.google.com/dataflow).
 
-3. Now we are ready for creating the Cloud Dataflow job. Open the [Cloud Dataflow console](https://console.cloud.google.com/dataflow).
+7. Click **Create Job From Template**
 
-4. Click **Create Job From Template**
+8. Enter the **Job name**, for example, <code><b>my-iot-job-1</b></code>.
 
-5. Enter the **Job name**, for example, <code><b>my-iot-job-1</b></code>.
+9. Select <code><b>asia-east1</b></code> for **Regional endpoint**
 
-6. Select <code><b>asia-east1</b></code> for **Regional endpoint**
+10. Under **Cloud Dataflow template**, select <code><b>Cloud Pub/Sub Topic to BigQuery</b></code>
 
-7. Under **Cloud Dataflow template**, select <code><b>Cloud Pub/Sub Topic to BigQuery</b></code>
+11. In the popped up section, specify the corresponding corresponding IoT Hub events PubSub topic <code><b>projects/my-spark-test-iot/topics/telemetry-data</b></code> (full path is required) for **Cloud Pub/Sub input subscription** 
 
-8. In the popped up section, specify the corresponding corresponding IoT Hub events PubSub topic <code><b>projects/my-spark-test-iot/topics/telemetry-data</b></code> (full path is required) for **Cloud Pub/Sub input subscription** 
+12. Specify the BigQuery table that we just created <code><b>my-spark-test-iot:telemetry_data_lake.telemetry_data_raw</b></code> (full path is required) for **BigQuery output table** 
 
-9. Specify the BigQuery table that we just created <code><b>my-spark-test-iot:telemetry_data_lake.telemetry_data_raw</b></code> (full path is required) for **BigQuery output table** 
+13. Specify the temp folder for Cloud Storage that we just created <code><b>gs://my-spark-test-iot-bucket/tmp</b></code> for **Temporary location** 
 
-10. Specify the temp folder for Cloud Storage that we just created <code><b>gs://my-spark-test-iot-bucket/tmp</b></code> for **Temporary location** 
-
-11. Keep the rest of the default values, and click **Run Job**
+14. Keep the rest of the default values, and click **Run Job**
 ![Dataflow](images/dataflow-1.png)
 
-12. If the device is still sending the stream of data, in a few minutes, the Cloud Dataflow job will be scaling up automatically to process the incoming data, and write the results into BigQuery.
+15. If the device is still sending the stream of data, in a few minutes, the Cloud Dataflow job will be scaling up automatically to process the incoming data, and write the results into BigQuery.
 
-13. Click into the name of the Cloud Dataflow job that we just created for visualization
+16. Click into the name of the Cloud Dataflow job that we just created for visualization
 ![Dataflow](images/dataflow-2.png)
 
-14. We can also visit BigQuery console, and execute a query there to confirm that data is being written to the table
+17. We can also visit BigQuery console, and execute a query there to confirm that data is being written to the table
 ```SQL
 SELECT * FROM `telemetry_data_lake.telemetry_data_raw`
 WHERE event_time LIKE '%Tue Apr 28%'
