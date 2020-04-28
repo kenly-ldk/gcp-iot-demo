@@ -1,4 +1,4 @@
-# Tutorial #2: Real time IOT data processing with Cloud Functions and Cloud Dataflow/Apache Beam
+# Tutorial #2: Real-time IoT data processing with Cloud Functions and Cloud Dataflow/Apache Beam
 
 The setup described in this tutorial addresses following scenario: 
 

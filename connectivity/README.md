@@ -344,4 +344,4 @@ To avoid incurring any future billing costs, it is recommended that you delete y
 <hr/>
 
 ## Next steps
-- [Tutorial #2: Real time IOT data processing with Cloud Functions and Cloud Dataflow/Apache Beam](https://github.com/kenly-ldk/gcp-iot-demo/tree/master/data-processing)
+- [Tutorial #2: Real-time IoT data processing with Cloud Functions and Cloud Dataflow/Apache Beam](https://github.com/kenly-ldk/gcp-iot-demo/tree/master/data-processing)
