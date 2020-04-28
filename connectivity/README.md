@@ -1,6 +1,6 @@
-# Tutorial: Cloud IoT Core - Connectivity
+# Tutorial #1: Cloud IoT Core - Connectivity
 
-This tutoria; is inspired and adapted from this [article](https://cloud.google.com/community/tutorials/cloud-iot-gateways-rpi) - which is part of [Google Cloud Community Tutorial](https://cloud.google.com/community/tutorials/)
+This tutorial is inspired and adapted from this [article](https://cloud.google.com/community/tutorials/cloud-iot-gateways-rpi) - which is part of [Google Cloud Community Tutorial](https://cloud.google.com/community/tutorials/)
 
 This tutorial shows you how to set up and use gateways on Cloud IoT Core. From the [documentation](https://cloud.google.com/iot/docs/how-tos/gateways), “a gateway is a device that connects less capable devices to Cloud IoT Core and performs several tasks on the device's behalf, such as communication, authentication, storage, and processing."
 
@@ -293,7 +293,7 @@ source run_device_v2
 <hr/>	
 
 ## Create a subscription to your telemetry topic to view data
-1. Open the [Cloud Pub/Sub dashboard](https://console.cloud.google.com/cloudpubsub).
+1. Open the [Cloud Pub/Sub console](https://console.cloud.google.com/cloudpubsub).
 
 2. Click the three dot menu button next to the telemetry topic telemetry-data you created earlier, and click **Create subscription**.
 

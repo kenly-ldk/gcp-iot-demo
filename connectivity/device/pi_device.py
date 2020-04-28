@@ -10,7 +10,7 @@ import time
 from sense_hat import SenseHat
 sh = SenseHat()
 
-ADDR = ''          # Edit the gateway address here, i.e. hostname or IP address
+ADDR = ''          # Edit the gateway address here
 PORT = 10000
 
 # Create a UDP socket
@@ -114,7 +114,7 @@ try:
             err = e.args[0]
             if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
                 ### Non-blocking operations
-                if enable_accelerometer == "True":
+                if enable_accelerometer == "true":
                     # accelerometer
                     acceleration = sh.get_accelerometer_raw()
                     x = acceleration['x']
@@ -125,7 +125,7 @@ try:
                     y=round(y, 0)
                     z=round(z, 0)
 
-                    logger.info("x={0}, y={1}, z={2}".format(x, y, z))
+                    logger.debug("x={0}, y={1}, z={2}".format(x, y, z))
                     RunAction('event', '{{ "device_id": "{}", "event_time": "{}", "raw_accelerometer_data": "x={}, y={}, z={}" }}'.format(device_id, time.ctime(), x, y, z))
             else:
                 # a "real" error occurred

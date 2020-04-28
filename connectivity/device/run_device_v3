@@ -1,0 +1,2 @@
+#!/bin/bash
+python ./pi_device.py my-device 0 true
