@@ -1,5 +1,5 @@
 cffi==1.14.0
-cryptography==2.9
+cryptography==3.2
 numpy==1.18.2
 paho-mqtt==1.5.0
 Pillow==7.1.1
