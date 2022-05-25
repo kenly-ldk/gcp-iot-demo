@@ -6,7 +6,7 @@ Pillow==7.1.1
 pip-autoremove==0.9.1
 pkg-resources==0.0.0
 pycparser==2.20
-PyJWT==1.7.1
+PyJWT==2.4.0
 RTIMULib==7.2.1
 sense-hat==2.2.0
 six==1.14.0
